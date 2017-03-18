@@ -17,10 +17,12 @@ public class Strategy extends Object
    int totalDefects;
    int prevDefects;      
    int forgiveCount;
-   int requiredSteps;
    double defectRating;
    double randomRating;
    double rEpsilon;
+   int requiredSteps;
+
+   
 
   // 0 = defect, 1 = cooperate
 

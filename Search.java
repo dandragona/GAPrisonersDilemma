@@ -95,13 +95,8 @@ public class Search extends Object{
 	//	the appropriate class file (extending FitnessFunction.java) and add
 	//	an else_if block below to instantiate the problem.
  
-		if (Parameters.problemType.equals("NM")){
-				problem = new NumberMatch();
-		}
-		else if (Parameters.problemType.equals("OM")){
-				problem = new OneMax();
-		}
-		else if (Parameters.problemType.equals("IPD"))
+		
+		if (Parameters.problemType.equals("IPD"))
 		{
 				problem = new IPD();
 		}
@@ -159,26 +154,30 @@ public class Search extends Object{
 				bestOfGenChromo.rawFitness = defaultBest;
 
 				//	Test Fitness of Each Member
+			      					//	Test Fitness of Each Member
 				for (int i=0; i<Parameters.popSize; i++){
-
 					member[i].rawFitness = 0;
 					member[i].sclFitness = 0;
 					member[i].proFitness = 0;
-					player1 = new StrategyAlwaysCooperate();
-      				player2 = new StrategyGA(member[i]);
-      				ipd = new IteratedPD(player1, player2);
-      				ipd.runSteps(maxSteps);
-      				player2Score = ipd.p2Score;
-      				player1Score = ipd.p1Score;
+					for (int j=0; j<Parameters.popSize; j++)
+					{
+						player1 = new StrategyBestTat(member[i].coopeRate);
+      					player2 = new StrategyBestTat(member[j].coopeRate);
+      					ipd = new IteratedPD(player1, player2);
+      					ipd.runSteps(maxSteps);
+      					player2Score = ipd.p2Score;
+      					player1Score = ipd.p1Score;
+   						problem.doRawFitness(member[i]);
+					}
+					
       				
 
       // 	System.out.printf(" Player 1 score = %d\n", ipd.player1Score());
       // System.out.printf(" Player 2 score = %d\n", ipd.player2Score());
-					problem.doRawFitness(member[i]);
 
 					sumRawFitness = sumRawFitness + member[i].rawFitness;
 					sumRawFitness2 = sumRawFitness2 +
-						member[i].rawFitness * member[i].rawFitness;
+					member[i].rawFitness * member[i].rawFitness;
 
 					if (Parameters.minORmax.equals("max")){
 						if (member[i].rawFitness > bestOfGenChromo.rawFitness){
@@ -375,16 +374,17 @@ public class Search extends Object{
 			Hwrite.left(bestOfRunR, 4, summaryOutput);
 			Hwrite.right(bestOfRunG, 4, summaryOutput);
 
-			problem.doPrintGenes(bestOfRunChromo, summaryOutput);
+			// problem.doPrintGenes(bestOfRunChromo, summaryOutput);
 
 			System.out.println(R + "\t" + "B" + "\t"+ (int)bestOfRunChromo.rawFitness);
+			System.out.println(bestOfRunChromo.coopeRate);
 
 		} //End of a Run
 
 		Hwrite.left("B", 8, summaryOutput);
 
-		problem.doPrintGenes(bestOverAllChromo, summaryOutput);
-		System.out.println(bestOverAllChromo.chromo);
+		// problem.doPrintGenes(bestOverAllChromo, summaryOutput);
+		System.out.println(bestOverAllChromo.coopeRate);
 
 		//	Output Fitness Statistics matrix
 		summaryOutput.write("Gen                 AvgFit              BestFit \n");

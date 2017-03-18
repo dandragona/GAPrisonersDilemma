@@ -13,7 +13,7 @@ public class StrategyObsTat extends Strategy
       {
       name = "Observational Tat";
       opponentLastMove = 1;
-      forgiveCount = 3;
+      forgiveCount = 7;
       numMoves = 0;
       randomRating = .5;
       rEpsilon = .1;

@@ -2,31 +2,27 @@
  * Class containing the tit-for-tat strategy.
  * @author	081028AW
  */
-public class StrategyGA extends Strategy
+public class StrategyEchoTat extends Strategy
    {
   /**
    * Encoding for tit-for-tat strategy.
    */
-   
-
 
   // 0 = defect, 1 = cooperate
 
-   public StrategyGA(Chromo member)
+   public StrategyEchoTat()
       {
-      name = "Strategy GA";
+      name = "Echo Tat";
       opponentLastMove = 1;
-      numMoves = 0;
-      moves = new int[100];
-
-      for (int i=0; i < 100; i++)
-        moves[i] = (int)(member.chromo.charAt(i)) - 48;
-      
       }  /* StrategyTitForTat */
 
    public int nextMove()
       {
-      return moves[numMoves++];
+        if (opponentLastMove == 1 && Math.random() < .1)
+          return 0;
+      
+        else
+          return opponentLastMove;
       }  /* nextMove */
 
    }  /* class StrategyTitForTat */

@@ -13,7 +13,7 @@ public class Chromo
 *                            INSTANCE VARIABLES                                *
 *******************************************************************************/
 
-	public String chromo;
+	public double coopeRate;
 	public double rawFitness;
 	public double sclFitness;
 	public double proFitness;
@@ -31,16 +31,7 @@ public class Chromo
 	public Chromo(){
 
 		//  Set gene values to a randum sequence of 1's and 0's
-		char geneBit;
-		chromo = "";
-		for (int i=0; i<Parameters.numGenes; i++){
-			for (int j=0; j<Parameters.geneSize; j++){
-				randnum = Search.r.nextDouble();
-				if (randnum > 0.5) geneBit = '0';
-				else geneBit = '1';
-				this.chromo = chromo + geneBit;
-			}
-		}
+		this.coopeRate = Search.r.nextDouble();
 
 		this.rawFitness = -1;   //  Fitness not yet evaluated
 		this.sclFitness = -1;   //  Fitness not yet scaled
@@ -54,45 +45,45 @@ public class Chromo
 
 	//  Get Alpha Represenation of a Gene **************************************
 
-	public String getGeneAlpha(int geneID){
-		int start = geneID * Parameters.geneSize;
-		int end = (geneID+1) * Parameters.geneSize;
-		String geneAlpha = this.chromo.substring(start, end);
-		return (geneAlpha);
-	}
+	// public String getGeneAlpha(int geneID){
+	// 	int start = geneID * Parameters.geneSize;
+	// 	int end = (geneID+1) * Parameters.geneSize;
+	// 	String geneAlpha = this.chromo.substring(start, end);
+	// 	return (geneAlpha);
+	// }
 
-	//  Get Integer Value of a Gene (Positive or Negative, 2's Compliment) ****
+	// //  Get Integer Value of a Gene (Positive or Negative, 2's Compliment) ****
 
-	public int getIntGeneValue(int geneID){
-		String geneAlpha = "";
-		int geneValue;
-		char geneSign;
-		char geneBit;
-		geneValue = 0;
-		geneAlpha = getGeneAlpha(geneID);
-		for (int i=Parameters.geneSize-1; i>=1; i--){
-			geneBit = geneAlpha.charAt(i);
-			if (geneBit == '1') geneValue = geneValue + (int) Math.pow(2.0, Parameters.geneSize-i-1);
-		}
-		geneSign = geneAlpha.charAt(0);
-		if (geneSign == '1') geneValue = geneValue - (int)Math.pow(2.0, Parameters.geneSize-1);
-		return (geneValue);
-	}
+	// public int getIntGeneValue(int geneID){
+	// 	String geneAlpha = "";
+	// 	int geneValue;
+	// 	char geneSign;
+	// 	char geneBit;
+	// 	geneValue = 0;
+	// 	geneAlpha = getGeneAlpha(geneID);
+	// 	for (int i=Parameters.geneSize-1; i>=1; i--){
+	// 		geneBit = geneAlpha.charAt(i);
+	// 		if (geneBit == '1') geneValue = geneValue + (int) Math.pow(2.0, Parameters.geneSize-i-1);
+	// 	}
+	// 	geneSign = geneAlpha.charAt(0);
+	// 	if (geneSign == '1') geneValue = geneValue - (int)Math.pow(2.0, Parameters.geneSize-1);
+	// 	return (geneValue);
+	// }
 
-	//  Get Integer Value of a Gene (Positive only) ****************************
+	// //  Get Integer Value of a Gene (Positive only) ****************************
 
-	public int getPosIntGeneValue(int geneID){
-		String geneAlpha = "";
-		int geneValue;
-		char geneBit;
-		geneValue = 0;
-		geneAlpha = getGeneAlpha(geneID);
-		for (int i=Parameters.geneSize-1; i>=0; i--){
-			geneBit = geneAlpha.charAt(i);
-			if (geneBit == '1') geneValue = geneValue + (int) Math.pow(2.0, Parameters.geneSize-i-1);
-		}
-		return (geneValue);
-	}
+	// public int getPosIntGeneValue(int geneID){
+	// 	String geneAlpha = "";
+	// 	int geneValue;
+	// 	char geneBit;
+	// 	geneValue = 0;
+	// 	geneAlpha = getGeneAlpha(geneID);
+	// 	for (int i=Parameters.geneSize-1; i>=0; i--){
+	// 		geneBit = geneAlpha.charAt(i);
+	// 		if (geneBit == '1') geneValue = geneValue + (int) Math.pow(2.0, Parameters.geneSize-i-1);
+	// 	}
+	// 	return (geneValue);
+	// }
 
 	//  Mutate a Chromosome Based on Mutation Type *****************************
 
@@ -105,16 +96,18 @@ public class Chromo
 
 		case 1:     //  Replace with new random number
 
-			for (int j=0; j<(Parameters.geneSize * Parameters.numGenes); j++){
-				x = this.chromo.charAt(j);
+			if (Search.r.nextDouble() < Parameters.mutationRate)
+			{
 				randnum = Search.r.nextDouble();
-				if (randnum < Parameters.mutationRate){
-					if (x == '1') x = '0';
-					else x = '1';
-				}
-				mutChromo = mutChromo + x;
+				
+				while(randnum > Parameters.mutationRate)
+					randnum = Search.r.nextDouble();
+
+				if(Search.r.nextDouble() < .5)
+					this.coopeRate = Math.min(1,this.coopeRate + randnum);
+				else
+					this.coopeRate = Math.max(0, this.coopeRate - randnum);
 			}
-			this.chromo = mutChromo;
 			break;
 
 		default:
@@ -172,20 +165,26 @@ public class Chromo
 
 	public static void mateParents(int pnum1, int pnum2, Chromo parent1, Chromo parent2, Chromo child1, Chromo child2){
 
-		int xoverPoint1;
-		int xoverPoint2;
+		double xoverPoint1;
+		double xoverPoint2;
+		double length;
 
 		switch (Parameters.xoverType){
 
 		case 1:     //  Single Point Crossover
 
-			//  Select crossover point
-			xoverPoint1 = 1 + (int)(Search.r.nextDouble() * (Parameters.numGenes * Parameters.geneSize-1));
-
-			//  Create child chromosome from parental material
-			child1.chromo = parent1.chromo.substring(0,xoverPoint1) + parent2.chromo.substring(xoverPoint1);
-			child2.chromo = parent2.chromo.substring(0,xoverPoint1) + parent1.chromo.substring(xoverPoint1);
-			break;
+			length = parent1.coopeRate - parent2.coopeRate;
+			if (length > 0)
+			{
+				child1.coopeRate = parent1.coopeRate - (length/3);
+				child2.coopeRate = parent2.coopeRate + (length/3);
+			}
+			else
+			{
+				child1.coopeRate = parent2.coopeRate + (length/3);
+				child2.coopeRate = parent1.coopeRate - (length/3);
+			}
+			break;			
 
 		case 2:     //  Two Point Crossover
 
@@ -209,7 +208,7 @@ public class Chromo
 	public static void mateParents(int pnum, Chromo parent, Chromo child){
 
 		//  Create child chromosome from parental material
-		child.chromo = parent.chromo;
+		child.coopeRate = parent.coopeRate;
 
 		//  Set fitness values back to zero
 		child.rawFitness = -1;   //  Fitness not yet evaluated
@@ -221,7 +220,7 @@ public class Chromo
 
 	public static void copyB2A (Chromo targetA, Chromo sourceB){
 
-		targetA.chromo = sourceB.chromo;
+		targetA.coopeRate = sourceB.coopeRate;
 
 		targetA.rawFitness = sourceB.rawFitness;
 		targetA.sclFitness = sourceB.sclFitness;
