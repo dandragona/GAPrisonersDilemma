@@ -32,7 +32,8 @@ public class IPD extends FitnessFunction{
 	public void doRawFitness(Chromo X)
 	{
 		IteratedPD ipd;
-		Strategy player1, downing, titForTat, titForTwoTats, alwaysRandom, alwaysDefect, alwaysCooperate, obsTat;
+		Strategy player1, lookUpTable, pavlov, downing, titForTat, titForTwoTats, alwaysRandom, alwaysDefect, alwaysCooperate, obsTat;
+            int randomSum = 0;
 
 		player1 = new StrategyBestTat(X.coopeRate);
       	alwaysRandom = new StrategyRandom();
@@ -42,34 +43,48 @@ public class IPD extends FitnessFunction{
       	titForTwoTats = new StrategyTitForTwoTats();
       	obsTat = new StrategyObsTat();
             downing = new StrategyDowning();
+            pavlov = new StrategyPavlov();
+            lookUpTable = new StrategyLookupTable();
       	
       	ipd = new IteratedPD(player1, titForTat);
-      	ipd.runSteps(200);
+      	ipd.runSteps(100);
       	X.rawFitness += ipd.player1Score();
 
       	ipd = new IteratedPD(player1, titForTwoTats);
-      	ipd.runSteps(200);
+      	ipd.runSteps(100);
       	X.rawFitness += ipd.player1Score();
 
       	ipd = new IteratedPD(player1, alwaysRandom);
-      	ipd.runSteps(200);
+      	ipd.runSteps(100);
       	X.rawFitness += ipd.player1Score();
 
       	ipd = new IteratedPD(player1, alwaysDefect);
-      	ipd.runSteps(200);
+      	ipd.runSteps(100);
       	X.rawFitness += ipd.player1Score();
 
       	ipd = new IteratedPD(player1, alwaysCooperate);
-      	ipd.runSteps(200);
+      	ipd.runSteps(100);
       	X.rawFitness += ipd.player1Score();
 
-      	// ipd = new IteratedPD(player1, obsTat);
-      	// ipd.runSteps(200);
-      	// X.rawFitness += ipd.player1Score();
+            ipd = new IteratedPD(player1, pavlov);
+            ipd.runSteps(100);
+            X.rawFitness += ipd.player1Score();
 
-            // ipd = new IteratedPD(player1, downing);
-            // ipd.runSteps(200);
-            // X.rawFitness += ipd.player1Score();
+
+      	ipd = new IteratedPD(player1, obsTat);
+      	ipd.runSteps(100);
+      	X.rawFitness += ipd.player1Score();
+
+            ipd = new IteratedPD(player1, downing);
+            ipd.runSteps(100);
+            X.rawFitness += ipd.player1Score();
+
+            ipd = new IteratedPD(player1, lookUpTable);
+            ipd.runSteps(100);
+            X.rawFitness += ipd.player1Score();
+
+            X.rawFitness = X.rawFitness/9;
+
 		
 	}
 

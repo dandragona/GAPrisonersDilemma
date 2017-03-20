@@ -18,7 +18,7 @@ public class StrategyObsTat extends Strategy
       randomRating = .5;
       rEpsilon = .1;
       requiredSteps = 10;
-      moves = new int[100];
+      moves = new int[200];
       }
    
    public int nextMove()
