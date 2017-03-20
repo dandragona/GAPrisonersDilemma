@@ -44,32 +44,32 @@ public class IPD extends FitnessFunction{
             downing = new StrategyDowning();
       	
       	ipd = new IteratedPD(player1, titForTat);
-      	ipd.runSteps(100);
+      	ipd.runSteps(200);
       	X.rawFitness += ipd.player1Score();
 
       	ipd = new IteratedPD(player1, titForTwoTats);
-      	ipd.runSteps(100);
+      	ipd.runSteps(200);
       	X.rawFitness += ipd.player1Score();
 
       	ipd = new IteratedPD(player1, alwaysRandom);
-      	ipd.runSteps(100);
+      	ipd.runSteps(200);
       	X.rawFitness += ipd.player1Score();
 
       	ipd = new IteratedPD(player1, alwaysDefect);
-      	ipd.runSteps(100);
+      	ipd.runSteps(200);
       	X.rawFitness += ipd.player1Score();
 
       	ipd = new IteratedPD(player1, alwaysCooperate);
-      	ipd.runSteps(100);
+      	ipd.runSteps(200);
       	X.rawFitness += ipd.player1Score();
 
       	// ipd = new IteratedPD(player1, obsTat);
-      	// ipd.runSteps(100);
+      	// ipd.runSteps(200);
       	// X.rawFitness += ipd.player1Score();
 
-            ipd = new IteratedPD(player1, downing);
-            ipd.runSteps(100);
-            X.rawFitness += ipd.player1Score();
+            // ipd = new IteratedPD(player1, downing);
+            // ipd.runSteps(200);
+            // X.rawFitness += ipd.player1Score();
 		
 	}
 

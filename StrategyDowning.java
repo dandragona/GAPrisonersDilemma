@@ -13,7 +13,7 @@ public class StrategyDowning extends Strategy
    public StrategyDowning()
       {
       name = "DOWNING";
-      moves = new int[100];
+      moves = new int[200];
       opponentLastMove = 1;
       myTwoLastMove = 1;
       myDefects = 0;
@@ -33,7 +33,6 @@ public class StrategyDowning extends Strategy
        theirCoops += opponentLastMove;
        theirDefects +=(opponentLastMove+1)%2;
 
-       System.out.println(myTwoLastMove + " " + myLastMove + " " + opponentLastMove);
        if(myTwoLastMove == 1)
        {
           coopeRating = ((double)(theirCoops))/(++myCoops);
@@ -46,11 +45,12 @@ public class StrategyDowning extends Strategy
 
        myTwoLastMove = myLastMove;
 
-       if(Math.abs(coopeRating - defectRating) < .15)
-          return 0;
 
        if(coopeRating > .8 && defectRating > .8)
         return 1;
+
+      if(Math.abs(coopeRating - defectRating) < .15)
+          return 0;
 
        else
         return myLastMove;
