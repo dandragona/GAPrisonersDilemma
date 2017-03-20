@@ -143,7 +143,7 @@ public class Chromo
 			return(j);
 
 		case 2:     //  Tournament Selection
-			double tourndifficulty = 0.8;
+			double tourndifficulty = 0.99;
 		  
 		  	randnum = Search.r.nextDouble();
 		  	k = (int) (randnum * Parameters.popSize);

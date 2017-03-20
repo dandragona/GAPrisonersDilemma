@@ -31,7 +31,46 @@ public class IPD extends FitnessFunction{
 
 	public void doRawFitness(Chromo X)
 	{
-		X.rawFitness += Search.player1Score;
+		IteratedPD ipd;
+		Strategy player1, downing, titForTat, titForTwoTats, alwaysRandom, alwaysDefect, alwaysCooperate, obsTat;
+
+		player1 = new StrategyBestTat(X.coopeRate);
+      	alwaysRandom = new StrategyRandom();
+      	alwaysDefect = new StrategyAlwaysDefect();
+      	alwaysCooperate = new StrategyAlwaysCooperate();
+      	titForTat = new StrategyTitForTat();
+      	titForTwoTats = new StrategyTitForTwoTats();
+      	obsTat = new StrategyObsTat();
+            downing = new StrategyDowning();
+      	
+      	ipd = new IteratedPD(player1, titForTat);
+      	ipd.runSteps(100);
+      	X.rawFitness += ipd.player1Score();
+
+      	ipd = new IteratedPD(player1, titForTwoTats);
+      	ipd.runSteps(100);
+      	X.rawFitness += ipd.player1Score();
+
+      	ipd = new IteratedPD(player1, alwaysRandom);
+      	ipd.runSteps(100);
+      	X.rawFitness += ipd.player1Score();
+
+      	ipd = new IteratedPD(player1, alwaysDefect);
+      	ipd.runSteps(100);
+      	X.rawFitness += ipd.player1Score();
+
+      	ipd = new IteratedPD(player1, alwaysCooperate);
+      	ipd.runSteps(100);
+      	X.rawFitness += ipd.player1Score();
+
+      	// ipd = new IteratedPD(player1, obsTat);
+      	// ipd.runSteps(100);
+      	// X.rawFitness += ipd.player1Score();
+
+            ipd = new IteratedPD(player1, downing);
+            ipd.runSteps(100);
+            X.rawFitness += ipd.player1Score();
+		
 	}
 
 //  PRINT OUT AN INDIVIDUAL GENE TO THE SUMMARY FILE *********************************

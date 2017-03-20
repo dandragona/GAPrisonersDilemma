@@ -27,8 +27,8 @@ public class RunIPD extends Object
             }  /* if */
          }  /* for i */
 
-      player1 = new StrategyObsTat();
-      player2 = new StrategyRandom();
+      player1 = new StrategyTitForTat();
+      player2 = new StrategyDowning();
       ipd = new IteratedPD(player1, player2);
 
       ipd.runSteps(maxSteps);

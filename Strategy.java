@@ -11,16 +11,15 @@ public class Strategy extends Object
 
    int opponentLastMove = 1;
    int myLastMove;
+   int totalDefects, prevDefects;
    String name;
-   int[] moves;
-   Integer numMoves;
-   int totalDefects;
-   int prevDefects;      
-   int forgiveCount;
-   double defectRating;
-   double randomRating;
-   double rEpsilon;
-   int requiredSteps;
+   int [] moves;
+   double defectRating, coopeRating;
+   int myDefects, myCoops, theirDefects, theirCoops;
+   int myTwoLastMove;
+   int numMoves, forgiveCount, requiredSteps;
+   double rEpsilon, randomRating;
+  
 
    
 

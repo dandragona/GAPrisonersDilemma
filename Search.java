@@ -139,14 +139,7 @@ public class Search extends Object{
 
 			//	Begin Each Run
 			for (G=0; G<Parameters.generations; G++){
-
-				 int maxSteps = 100;
-
-      			Strategy player1, player2;
-      			IteratedPD ipd;
-
-
-      			
+   
 				sumProFitness = 0;
 				sumSclFitness = 0;
 				sumRawFitness = 0;
@@ -159,16 +152,8 @@ public class Search extends Object{
 					member[i].rawFitness = 0;
 					member[i].sclFitness = 0;
 					member[i].proFitness = 0;
-					for (int j=0; j<Parameters.popSize; j++)
-					{
-						player1 = new StrategyBestTat(member[i].coopeRate);
-      					player2 = new StrategyBestTat(member[j].coopeRate);
-      					ipd = new IteratedPD(player1, player2);
-      					ipd.runSteps(maxSteps);
-      					player2Score = ipd.p2Score;
-      					player1Score = ipd.p1Score;
-   						problem.doRawFitness(member[i]);
-					}
+   					problem.doRawFitness(member[i]);
+					
 					
       				
 
@@ -384,7 +369,7 @@ public class Search extends Object{
 		Hwrite.left("B", 8, summaryOutput);
 
 		// problem.doPrintGenes(bestOverAllChromo, summaryOutput);
-		System.out.println(bestOverAllChromo.coopeRate);
+		System.out.println(bestOverAllChromo.coopeRate + " and the fitness is " + bestOverAllChromo.rawFitness);
 
 		//	Output Fitness Statistics matrix
 		summaryOutput.write("Gen                 AvgFit              BestFit \n");
